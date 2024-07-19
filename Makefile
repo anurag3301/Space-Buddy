@@ -5,7 +5,7 @@ INCLUDE_DIR := include
 
 # Compiler and flags
 CC := gcc
-CFLAGS := -I$(INCLUDE_DIR) -Wall -Wextra -std=c99
+CFLAGS := -I$(INCLUDE_DIR) -Wall -Wextra -std=c99 -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 
 # Executable name
 EXEC := spacebuddy
@@ -19,7 +19,7 @@ all: $(EXEC)
 
 # Link object files to create the final executable
 $(EXEC): $(OBJS)
-	$(CC) $(OBJS) -o $@
+	$(CC) $(OBJS) -lraylib -o $@
 
 # Compile source files to object files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)

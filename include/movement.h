@@ -3,7 +3,8 @@
 #include "main.h"
 #include <raylib.h>
 
-void UpdateMovement(Direction2D *moveDirection);
-void UpdatePosition(Vector2* pos, Direction2D moveDirection, int speed);
+void UpdateMovement(Direction2D *moveDirection, RotationDirection *rotate);
+void UpdatePosition(Vector2* pos, float* angle, Direction2D moveDirection, RotationDirection rotate, int speed, Vector2 size);
+float faceMouseAngle(Vector2 pos);
 
 #endif

@@ -1,0 +1,12 @@
+%clang
+%cpp -std=c++11
+%c -std=c99
+
+-Iinclude
+-Isrc
+
+-Wall
+-Wextra
+
+%compile_flags
+src

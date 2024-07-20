@@ -1,12 +1,15 @@
 #include <stdio.h>
 #include <raylib.h>
 #include <raymath.h>
+#include <stdlib.h>
 
 #include "main.h"
 #include "movement.h"
+#include "darray.h"
 
 
 int main(){
+
     const int screenWidth = 1600;
     const int screenHeight = 900;
     const int speed = 5;
@@ -42,5 +45,6 @@ int main(){
         EndDrawing();
     }
 
+    UnloadTexture(shipTexture);
     CloseWindow();
 }

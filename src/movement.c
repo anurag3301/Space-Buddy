@@ -1,68 +1,69 @@
 #include "movement.h"
 #include "main.h"
+#include "moveableElement.h"
 #include <raylib.h>
 #include <math.h>
 
-void UpdateMovement(Direction2D *moveDirection, RotationDirection *rotate){
+void UpdateMovement(MoveInfo *move){
     if(IsKeyPressed(KEY_W) || IsKeyPressedRepeat(KEY_W)){
-        moveDirection->vertical = UP;
+        move->moveDir.vertical = UP;
     }
     if(IsKeyPressed(KEY_S) || IsKeyPressedRepeat(KEY_S)){
-        moveDirection->vertical = DOWN;
+        move->moveDir.vertical = DOWN;
     }
     if(IsKeyPressed(KEY_A) || IsKeyPressedRepeat(KEY_A)){
-        moveDirection->horizontal = LEFT;
+        move->moveDir.horizontal = LEFT;
     }
     if(IsKeyPressed(KEY_D) || IsKeyPressedRepeat(KEY_D)){
-        moveDirection->horizontal = RIGHT;
+        move->moveDir.horizontal = RIGHT;
     }
     if(IsKeyPressed(KEY_RIGHT) || IsKeyPressedRepeat(KEY_RIGHT)){
-        *rotate = CLOCKWISE; 
+        move->rotate = CLOCKWISE; 
     }
     if(IsKeyPressed(KEY_LEFT) || IsKeyPressedRepeat(KEY_LEFT)){
-        *rotate = ANTICLOCKWISE; 
+        move->rotate = ANTICLOCKWISE; 
     }
 
-    if((IsKeyReleased(KEY_W) && moveDirection->vertical == UP)||
-       (IsKeyReleased(KEY_S) && moveDirection->vertical == DOWN)){
-        moveDirection->vertical = NONE;
+    if((IsKeyReleased(KEY_W) && move->moveDir.vertical == UP)||
+       (IsKeyReleased(KEY_S) && move->moveDir.vertical == DOWN)){
+        move->moveDir.vertical = NONE;
     }
 
-    if((IsKeyReleased(KEY_A) && moveDirection->horizontal == LEFT)||
-       (IsKeyReleased(KEY_D) && moveDirection->horizontal == RIGHT)){
-        moveDirection->horizontal = NONE;
+    if((IsKeyReleased(KEY_A) && move->moveDir.horizontal == LEFT)||
+       (IsKeyReleased(KEY_D) && move->moveDir.horizontal == RIGHT)){
+        move->moveDir.horizontal = NONE;
     }
 
-    if((IsKeyReleased(KEY_RIGHT) && *rotate == CLOCKWISE)||
-       (IsKeyReleased(KEY_LEFT) && *rotate == ANTICLOCKWISE)){
-        *rotate = NOROTATE;
+    if((IsKeyReleased(KEY_RIGHT) && move->rotate == CLOCKWISE)||
+       (IsKeyReleased(KEY_LEFT) && move->rotate == ANTICLOCKWISE)){
+        move->rotate = NOROTATE;
     }
 }
 
 
-void UpdatePosition(Vector2* pos, float* angle, Direction2D moveDirection, RotationDirection rotate, int speed, Vector2 size){
-    if(moveDirection.vertical == UP){
-        pos->y -= speed;
+void UpdatePosition(MoveInfo *move, Vector2 size){
+    if(move->moveDir.vertical == UP){
+        move->pos.y -= move->speed;
     }
-    else if(moveDirection.vertical == DOWN){
-        pos->y += speed;
-    }
-
-    if(moveDirection.horizontal == RIGHT){
-        pos->x += speed;
-    }
-    else if(moveDirection.horizontal == LEFT){
-        pos->x -= speed;
+    else if(move->moveDir.vertical == DOWN){
+        move->pos.y += move->speed;
     }
 
-    if(pos->x-size.x/2 < 0)pos->x += speed;
-    if(pos->y-size.y/2 < 0)pos->y += speed;
-    if(pos->x+size.x/2 > GetScreenWidth())pos->x -= speed;
-    if(pos->y+size.y/2 > GetScreenHeight())pos->y -= speed;
+    if(move->moveDir.horizontal == RIGHT){
+        move->pos.x += move->speed;
+    }
+    else if(move->moveDir.horizontal == LEFT){
+        move->pos.x -= move->speed;
+    }
+
+    if(move->pos.x-size.x/2 < 0)move->pos.x += move->speed;
+    if(move->pos.y-size.y/2 < 0)move->pos.y += move->speed;
+    if(move->pos.x+size.x/2 > GetScreenWidth())move->pos.x -= move->speed;
+    if(move->pos.y+size.y/2 > GetScreenHeight())move->pos.y -= move->speed;
 
 
-    if(rotate == CLOCKWISE) *angle += speed*0.5;
-    else if(rotate == ANTICLOCKWISE) *angle -= speed*0.5;
+    if(move->rotate == CLOCKWISE) move->angle += move->speed*0.5;
+    else if(move->rotate == ANTICLOCKWISE) move->angle -= move->speed*0.5;
 }
 
 

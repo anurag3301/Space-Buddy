@@ -5,7 +5,7 @@ INCLUDE_DIR := include
 
 # Compiler and flags
 CC := gcc
-CFLAGS := -I$(INCLUDE_DIR) -g -Wall -Wextra -std=c99 -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+CFLAGS := -I$(INCLUDE_DIR) -g -Wall -Wextra -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 
 # Executable name
 EXEC := spacebuddy

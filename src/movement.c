@@ -3,6 +3,7 @@
 #include "moveableElement.h"
 #include <raylib.h>
 #include <math.h>
+#include <raymath.h>
 
 void UpdateMovement(MoveInfo *move){
     if(IsKeyPressed(KEY_W) || IsKeyPressedRepeat(KEY_W)){
@@ -67,8 +68,8 @@ void UpdatePosition(MoveInfo *move, Vector2 size){
 }
 
 
-float faceMouseAngle(Vector2 pos){
-    Vector2 diff = {GetMouseX()-pos.x, GetMouseY()-pos.y};
+float angleBW2Vector(Vector2 pos, Vector2 targetPos){
+    Vector2 diff = Vector2Subtract(targetPos, pos);
     float rotation = atan2(diff.y, diff.x) * RAD2DEG;
     return rotation;
 }

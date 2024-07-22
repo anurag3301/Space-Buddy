@@ -4,11 +4,11 @@
 #include <sys/types.h>
 #include <stdio.h>
 
-DArray createDArray(){
-    DArray arr;
-    arr.max_size = 4;
-    arr.data = malloc(sizeof(void*) * arr.max_size);
-    arr.size = 0;
+DArray *createDArray(){
+    DArray *arr = malloc(sizeof(DArray));
+    arr->max_size = 4;
+    arr->data = malloc(sizeof(void*) * arr->max_size);
+    arr->size = 0;
 
     return arr;
 }
@@ -23,12 +23,15 @@ void appendDA(DArray* arr, void* element){
     arr->data[arr->size++] = element;
 }
 
-void freeDA(DArray* arr){
+void freeDA(DArray** darr){
+    DArray *arr = *darr;
     for(size_t i=0; i<arr->size; i++) free(arr->data[i]);
     free(arr->data);
     arr->data = NULL;
     arr->size = 0;
     arr->max_size = 0;
+    free(arr);
+    *darr = NULL;
 }
 
 void removeDA(DArray* arr, size_t index){

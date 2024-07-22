@@ -8,12 +8,12 @@ typedef struct{
     size_t max_size;
 } DArray;
 
-DArray createDArray();
+DArray* createDArray();
 void appendDA(DArray* arr, void* element);
 void removeDA(DArray* arr, size_t index);
 void insertDA(DArray* arr, void* element, size_t index);
 void doubleSizeDA(DArray* arr);
-void freeDA(DArray* arr);
+void freeDA(DArray** arr);
 void printDA(DArray arr, void (*print_fun)(void*));
 
 #endif

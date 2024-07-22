@@ -9,6 +9,6 @@
 void UpdateMovement(MoveInfo *move);
 void UpdatePosition(MoveInfo *move, Vector2 size);
 void UpdatePositionShot(DArray *shotArr, Vector2 size);
-float faceMouseAngle(Vector2 pos);
+float angleBW2Vector(Vector2 pos, Vector2 targetPos);
 
 #endif

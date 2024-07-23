@@ -17,8 +17,8 @@ int main(){
     const int screenWidth = 1600;
     const int screenHeight = 900;
 
-    MoveInfo shipMoveInfo = {5, {screenWidth/2, screenHeight/2}, 0, {NONE, NONE}, NOROTATE}; 
-    MoveInfo enemyMoveInfo = {5, {200, 200}, 0, {NONE, NONE}, NOROTATE}; 
+    MoveInfo shipMoveInfo = {6, {screenWidth/2, screenHeight/2}, 0, {NONE, NONE}, NOROTATE}; 
+    MoveInfo enemyMoveInfo = {3, {200, 200}, 0, {NONE, NONE}, NOROTATE}; 
     EnemyInfo enemy = {300, {0,0}, &enemyMoveInfo, 25, createDArray()};
     clock_gettime(CLOCK_MONOTONIC, &enemy.lastFire);
 
@@ -45,12 +45,13 @@ int main(){
 
         UpdateMovement(&shipMoveInfo); 
         UpdatePosition(&shipMoveInfo, (Vector2){shipTexture.width, shipTexture.height});
+        /* moveEnemyShip(&enemy); */
 
-        if(IsKeyPressed(KEY_SPACE)){
+        if(IsKeyPressed(KEY_SPACE) || IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
             fireBullet(shotArray, 15, shipMoveInfo); 
         }
 
-        fireEnemyBullet(&enemy);
+        /* fireEnemyBullet(&enemy); */
 
         UpdatePositionShot(shotArray, (Vector2){shotTexture.width, shotTexture.height});
         UpdatePositionShot(enemy.shotArray, (Vector2){shotTexture.width, shotTexture.height});

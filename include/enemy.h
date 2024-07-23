@@ -15,5 +15,6 @@ typedef struct{
 
 void fireEnemyBullet(EnemyInfo* info);
 
+void moveEnemyShip(EnemyInfo *info);
 
 #endif

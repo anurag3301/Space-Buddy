@@ -41,3 +41,12 @@ void moveEnemyShip(EnemyInfo *info){
     if(move->pos.x > GetScreenWidth())move->moveDir.horizontal = LEFT;
     /* if(move->pos.y+size.y/2 > GetScreenHeight())move->pos.y -= move->speed; */
 }
+
+
+void bulletHitEnemy(EnemyInfo *info, Texture2D enemyTexture, DArray *shotArr, Texture2D shotTexture){
+    for(size_t i=0; i<shotArr->size; i++){
+        if(BulletCollision(*info->shipMove, enemyTexture, *(MoveInfo*)shotArr->data[i], shotTexture)){
+            removeDA(shotArr, i);        
+        }
+    }
+}

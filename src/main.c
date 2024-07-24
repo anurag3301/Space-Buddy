@@ -11,6 +11,8 @@
 #include "moveableElement.h"
 #include "shot.h"
 #include "enemy.h"
+#include "calc.h"
+#include "utils.h"
 
 
 int main(){
@@ -48,15 +50,17 @@ int main(){
         /* moveEnemyShip(&enemy); */
 
         if(IsKeyPressed(KEY_SPACE) || IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
-            fireBullet(shotArray, 15, shipMoveInfo); 
+            fireBullet(shotArray, 30, shipMoveInfo); 
         }
 
         /* fireEnemyBullet(&enemy); */
 
         UpdatePositionShot(shotArray, (Vector2){shotTexture.width, shotTexture.height});
         UpdatePositionShot(enemy.shotArray, (Vector2){shotTexture.width, shotTexture.height});
+        
+        bulletHitEnemy(&enemy, enemyTexture, shotArray, enemyTexture);
 
-        /* shipMoveInfo.angle = angleBW2Vector(shipMoveInfo.pos, (Vector2){GetMouseX(), GetMouseY()}); */
+        shipMoveInfo.angle = angleBW2Vector(shipMoveInfo.pos, (Vector2){GetMouseX(), GetMouseY()});
         enemyMoveInfo.angle = angleBW2Vector(enemyMoveInfo.pos, shipMoveInfo.pos);
 
         DrawBullet(shotArray, shotTexture);
@@ -71,7 +75,7 @@ int main(){
                 (Rectangle){enemyMoveInfo.pos.x, enemyMoveInfo.pos.y, enemyTexture.width, enemyTexture.height}, 
                 (Vector2){enemyTexture.width / 2.0f, enemyTexture.height / 2.0f }, 
                 enemyMoveInfo.angle, RAYWHITE);
-    
+
         EndDrawing();
     }
 

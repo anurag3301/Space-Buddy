@@ -17,4 +17,6 @@ void fireEnemyBullet(EnemyInfo* info);
 
 void moveEnemyShip(EnemyInfo *info);
 
+void bulletHitEnemy(EnemyInfo *info, Texture2D enemyTexture, DArray *shotArr, Texture2D shotTexture);
+
 #endif

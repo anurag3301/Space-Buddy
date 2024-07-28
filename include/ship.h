@@ -11,7 +11,7 @@ typedef struct{
     struct timespec lastFire;
     MoveInfo *move;
     int bulletSpeed;
-    DArray *shotArray;
+    DArray *bulletArray;
     Texture2D texture; 
 } ShipInfo;
 

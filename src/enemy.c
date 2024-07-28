@@ -1,5 +1,5 @@
 #include "enemy.h"
-#include "shot.h"
+#include "bullet.h"
 #include <time.h>
 #include <stdio.h>
 
@@ -43,10 +43,10 @@ void moveEnemyShip(ShipInfo *info){
 }
 
 
-void bulletHitEnemy(ShipInfo *info, Texture2D enemyTexture, DArray *shotArr){
-    for(size_t i=0; i<shotArr->size; i++){
-            removeDA(shotArr, i);
+void bulletHitEnemy(ShipInfo *info, Texture2D enemyTexture, DArray *bulletArr){
+    for(size_t i=0; i<bulletArr->size; i++){
         if(bulletCollision(*(info->move), enemyTexture, *(MoveInfo*)bulletArr->data[i])){
+            removeDA(bulletArr, i);
         }
     }
 }

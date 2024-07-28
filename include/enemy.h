@@ -9,6 +9,6 @@ void fireEnemyBullet(ShipInfo* info);
 
 void moveEnemyShip(ShipInfo *info);
 
-void bulletHitEnemy(ShipInfo *info, Texture2D enemyTexture, DArray *shotArr);
+void bulletHitEnemy(ShipInfo *info, Texture2D enemyTexture, DArray *bulletArr);
 
 #endif

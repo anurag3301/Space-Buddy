@@ -9,7 +9,7 @@
 #include "movement.h"
 #include "darray.h"
 #include "moveableElement.h"
-#include "shot.h"
+#include "bullet.h"
 #include "enemy.h"
 #include "calc.h"
 #include "utils.h"
@@ -26,9 +26,9 @@ int main(){
     SetTargetFPS(60);
 
     Texture2D shipTexture = textureFromImage("images/ship.png");
-    Texture2D shotTexture = textureFromImage("images/shot.png");
+    Texture2D bulletTexture = textureFromImage("images/bullet.png");
     Texture2D enemyTexture = textureFromImage("images/enemy.png");
-    Texture2D enemyShotTexture = textureFromImage("images/enemyshot.png");
+    Texture2D enemyBulletTexture = textureFromImage("images/enemybullet.png");
 
 
     MoveInfo shipMoveInfo = {6, {screenWidth/2, screenHeight/2}, 0, {NONE, NONE}, NOROTATE}; 
@@ -49,21 +49,21 @@ int main(){
         moveEnemyShip(&enemy);
 
         if(IsKeyPressed(KEY_SPACE) || IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
-            fireBullet(ship.shotArray, 25, *ship.move); 
+            fireBullet(ship.bulletArray, 25, *ship.move); 
         }
 
         fireEnemyBullet(&enemy);
 
-        updateShotPosition(ship.shotArray, (Vector2){shotTexture.width, shotTexture.height});
-        updateShotPosition(enemy.shotArray, (Vector2){shotTexture.width, shotTexture.height});
+        updateBulletPosition(ship.bulletArray, (Vector2){bulletTexture.width, bulletTexture.height});
+        updateBulletPosition(enemy.bulletArray, (Vector2){bulletTexture.width, bulletTexture.height});
         
-        bulletHitEnemy(&enemy, enemyTexture, ship.shotArray);
+        bulletHitEnemy(&enemy, enemyTexture, ship.bulletArray);
 
         (*ship.move).angle = angleBW2Vector(shipMoveInfo.pos, (Vector2){GetMouseX(), GetMouseY()});
         (*enemy.move).angle = angleBW2Vector((*enemy.move).pos, (*ship.move).pos);
 
-        drawBullet(ship.shotArray, shotTexture);
-        drawBullet(enemy.shotArray, enemyShotTexture);
+        drawBullet(ship.bulletArray, bulletTexture);
+        drawBullet(enemy.bulletArray, enemyBulletTexture);
 
         drawShip(ship);
         drawShip(enemy);
@@ -71,8 +71,8 @@ int main(){
         EndDrawing();
     }
 
-    freeDA(&ship.shotArray);
-    freeDA(&enemy.shotArray);
+    freeDA(&ship.bulletArray);
+    freeDA(&enemy.bulletArray);
 
     UnloadTexture(shipTexture);
     CloseWindow();

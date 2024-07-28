@@ -59,7 +59,7 @@ int main(){
         UpdatePositionShot(ship.shotArray, (Vector2){shotTexture.width, shotTexture.height});
         UpdatePositionShot(enemy.shotArray, (Vector2){shotTexture.width, shotTexture.height});
         
-        bulletHitEnemy(&enemy, enemyTexture, ship.shotArray, enemyTexture);
+        bulletHitEnemy(&enemy, enemyTexture, ship.shotArray);
 
         (*ship.shipMove).angle = angleBW2Vector(shipMoveInfo.pos, (Vector2){GetMouseX(), GetMouseY()});
         (*enemy.shipMove).angle = angleBW2Vector((*enemy.shipMove).pos, (*ship.shipMove).pos);

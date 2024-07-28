@@ -22,7 +22,7 @@ void DrawBullet(DArray *shotArray, Texture2D shotTexture){
     }
 }
 
-bool BulletCollision(MoveInfo shipMove, Texture2D shipTexture, MoveInfo shotMove, Texture2D shotTexture){
+bool BulletCollision(MoveInfo shipMove, Texture2D shipTexture, MoveInfo shotMove){
     Quadrangle shipQuad  = texturePosToQuad(shipMove.pos, shipTexture);
     shipQuad = rotateQuad(shipQuad, DEG2RAD*shipMove.angle);
     Vector2 points[] = {shipQuad.p1, shipQuad.p2, shipQuad.p3, shipQuad.p4};

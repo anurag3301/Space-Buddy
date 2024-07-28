@@ -3,13 +3,12 @@
 #include <stddef.h>
 #include "moveableElement.h"
 #include "darray.h"
-#include <time.h>
 #include "ship.h"
 
 void fireEnemyBullet(ShipInfo* info);
 
 void moveEnemyShip(ShipInfo *info);
 
-void bulletHitEnemy(ShipInfo *info, Texture2D enemyTexture, DArray *shotArr, Texture2D shotTexture);
+void bulletHitEnemy(ShipInfo *info, Texture2D enemyTexture, DArray *shotArr);
 
 #endif

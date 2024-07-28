@@ -43,9 +43,9 @@ void moveEnemyShip(ShipInfo *info){
 }
 
 
-void bulletHitEnemy(ShipInfo *info, Texture2D enemyTexture, DArray *shotArr, Texture2D shotTexture){
+void bulletHitEnemy(ShipInfo *info, Texture2D enemyTexture, DArray *shotArr){
     for(size_t i=0; i<shotArr->size; i++){
-        if(BulletCollision(*(info->shipMove), enemyTexture, *(MoveInfo*)shotArr->data[i], shotTexture)){
+        if(BulletCollision(*(info->shipMove), enemyTexture, *(MoveInfo*)shotArr->data[i])){
             removeDA(shotArr, i);
         }
     }

@@ -4,19 +4,12 @@
 #include "moveableElement.h"
 #include "darray.h"
 #include <time.h>
+#include "ship.h"
 
-typedef struct{
-    size_t fireDelay;
-    struct timespec lastFire;
-    MoveInfo *shipMove;
-    int bulletSpeed;
-    DArray *shotArray;
-} EnemyInfo;
+void fireEnemyBullet(ShipInfo* info);
 
-void fireEnemyBullet(EnemyInfo* info);
+void moveEnemyShip(ShipInfo *info);
 
-void moveEnemyShip(EnemyInfo *info);
-
-void bulletHitEnemy(EnemyInfo *info, Texture2D enemyTexture, DArray *shotArr, Texture2D shotTexture);
+void bulletHitEnemy(ShipInfo *info, Texture2D enemyTexture, DArray *shotArr, Texture2D shotTexture);
 
 #endif

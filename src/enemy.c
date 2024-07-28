@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 
-void fireEnemyBullet(EnemyInfo *info){
+void fireEnemyBullet(ShipInfo *info){
     struct timespec now;
     clock_gettime(CLOCK_MONOTONIC, &now);
     size_t elapsed_ms = (now.tv_sec - info->lastFire.tv_sec) * 1000 + (now.tv_nsec - info->lastFire.tv_nsec) / 1000000;
@@ -16,7 +16,7 @@ void fireEnemyBullet(EnemyInfo *info){
 }
 
 
-void moveEnemyShip(EnemyInfo *info){
+void moveEnemyShip(ShipInfo *info){
     MoveInfo *move = info->shipMove;
 
     if(move->moveDir.vertical == UP){
@@ -43,7 +43,7 @@ void moveEnemyShip(EnemyInfo *info){
 }
 
 
-void bulletHitEnemy(EnemyInfo *info, Texture2D enemyTexture, DArray *shotArr, Texture2D shotTexture){
+void bulletHitEnemy(ShipInfo *info, Texture2D enemyTexture, DArray *shotArr, Texture2D shotTexture){
     for(size_t i=0; i<shotArr->size; i++){
         if(BulletCollision(*(info->shipMove), enemyTexture, *(MoveInfo*)shotArr->data[i], shotTexture)){
             removeDA(shotArr, i);

@@ -13,6 +13,7 @@
 #include "enemy.h"
 #include "calc.h"
 #include "utils.h"
+#include "ship.h"
 
 
 int main(){
@@ -20,8 +21,11 @@ int main(){
     const int screenHeight = 900;
 
     MoveInfo shipMoveInfo = {6, {screenWidth/2, screenHeight/2}, 0, {NONE, NONE}, NOROTATE}; 
+    ShipInfo ship = {0, {0,0}, &shipMoveInfo, 15, createDArray()};
+
     MoveInfo enemyMoveInfo = {3, {200, 200}, 0, {NONE, NONE}, NOROTATE}; 
-    EnemyInfo enemy = {400, {0,0}, &enemyMoveInfo, 15, createDArray()};
+    ShipInfo enemy = {400, {0,0}, &enemyMoveInfo, 15, createDArray()};
+
     clock_gettime(CLOCK_MONOTONIC, &enemy.lastFire);
 
     InitWindow(screenWidth, screenHeight, "Space Buddy");
@@ -32,47 +36,46 @@ int main(){
     Texture2D enemyTexture = textureFromImage("images/enemy.png");
     Texture2D enemyShotTexture = textureFromImage("images/enemyshot.png");
 
-    DArray *shotArray = createDArray();
 
     while(!WindowShouldClose()){
         BeginDrawing();
         ClearBackground(BLACK);
 
-        UpdateMovement(&shipMoveInfo); 
-        UpdatePosition(&shipMoveInfo, (Vector2){shipTexture.width, shipTexture.height});
+        UpdateMovement(ship.shipMove); 
+        UpdatePosition(ship.shipMove, (Vector2){shipTexture.width, shipTexture.height});
         moveEnemyShip(&enemy);
 
         if(IsKeyPressed(KEY_SPACE) || IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
-            fireBullet(shotArray, 25, shipMoveInfo); 
+            fireBullet(ship.shotArray, 25, *ship.shipMove); 
         }
 
         fireEnemyBullet(&enemy);
 
-        UpdatePositionShot(shotArray, (Vector2){shotTexture.width, shotTexture.height});
+        UpdatePositionShot(ship.shotArray, (Vector2){shotTexture.width, shotTexture.height});
         UpdatePositionShot(enemy.shotArray, (Vector2){shotTexture.width, shotTexture.height});
         
-        bulletHitEnemy(&enemy, enemyTexture, shotArray, enemyTexture);
+        bulletHitEnemy(&enemy, enemyTexture, ship.shotArray, enemyTexture);
 
-        shipMoveInfo.angle = angleBW2Vector(shipMoveInfo.pos, (Vector2){GetMouseX(), GetMouseY()});
-        enemyMoveInfo.angle = angleBW2Vector(enemyMoveInfo.pos, shipMoveInfo.pos);
+        (*ship.shipMove).angle = angleBW2Vector(shipMoveInfo.pos, (Vector2){GetMouseX(), GetMouseY()});
+        (*enemy.shipMove).angle = angleBW2Vector((*enemy.shipMove).pos, (*ship.shipMove).pos);
 
-        DrawBullet(shotArray, shotTexture);
+        DrawBullet(ship.shotArray, shotTexture);
         DrawBullet(enemy.shotArray, enemyShotTexture);
 
         DrawTexturePro(shipTexture, (Rectangle){0, 0, shipTexture.width, shipTexture.height}, 
-                (Rectangle){shipMoveInfo.pos.x, shipMoveInfo.pos.y, shipTexture.width, shipTexture.height}, 
+                (Rectangle){(*ship.shipMove).pos.x, shipMoveInfo.pos.y, shipTexture.width, shipTexture.height}, 
                 (Vector2){shipTexture.width / 2.0f, shipTexture.height / 2.0f }, 
-                shipMoveInfo.angle, RAYWHITE);
+                (*ship.shipMove).angle, RAYWHITE);
 
         DrawTexturePro(enemyTexture, (Rectangle){0, 0, enemyTexture.width, enemyTexture.height}, 
-                (Rectangle){enemyMoveInfo.pos.x, enemyMoveInfo.pos.y, enemyTexture.width, enemyTexture.height}, 
+                (Rectangle){(*enemy.shipMove).pos.x, (*enemy.shipMove).pos.y, enemyTexture.width, enemyTexture.height}, 
                 (Vector2){enemyTexture.width / 2.0f, enemyTexture.height / 2.0f }, 
-                enemyMoveInfo.angle, RAYWHITE);
+                (*enemy.shipMove).angle, RAYWHITE);
 
         EndDrawing();
     }
 
-    freeDA(&shotArray);
+    freeDA(&ship.shotArray);
     freeDA(&enemy.shotArray);
 
     UnloadTexture(shipTexture);

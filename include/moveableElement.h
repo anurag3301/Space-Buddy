@@ -7,7 +7,7 @@ typedef struct{
     int speed;
     Vector2 pos;
     float angle;
-    Direction2D moveDir;
+    Direction2D direction;
     RotationDirection rotate;
 } MoveInfo;
 

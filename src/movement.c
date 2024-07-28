@@ -7,16 +7,16 @@
 
 void captureMoveInput(MoveInfo *move){
     if(IsKeyPressed(KEY_W) || IsKeyPressedRepeat(KEY_W)){
-        move->moveDir.vertical = UP;
+        move->direction.vertical = UP;
     }
     if(IsKeyPressed(KEY_S) || IsKeyPressedRepeat(KEY_S)){
-        move->moveDir.vertical = DOWN;
+        move->direction.vertical = DOWN;
     }
     if(IsKeyPressed(KEY_A) || IsKeyPressedRepeat(KEY_A)){
-        move->moveDir.horizontal = LEFT;
+        move->direction.horizontal = LEFT;
     }
     if(IsKeyPressed(KEY_D) || IsKeyPressedRepeat(KEY_D)){
-        move->moveDir.horizontal = RIGHT;
+        move->direction.horizontal = RIGHT;
     }
     if(IsKeyPressed(KEY_RIGHT) || IsKeyPressedRepeat(KEY_RIGHT)){
         move->rotate = CLOCKWISE; 
@@ -25,14 +25,14 @@ void captureMoveInput(MoveInfo *move){
         move->rotate = ANTICLOCKWISE; 
     }
 
-    if((IsKeyReleased(KEY_W) && move->moveDir.vertical == UP)||
-       (IsKeyReleased(KEY_S) && move->moveDir.vertical == DOWN)){
-        move->moveDir.vertical = NONE;
+    if((IsKeyReleased(KEY_W) && move->direction.vertical == UP)||
+       (IsKeyReleased(KEY_S) && move->direction.vertical == DOWN)){
+        move->direction.vertical = NONE;
     }
 
-    if((IsKeyReleased(KEY_A) && move->moveDir.horizontal == LEFT)||
-       (IsKeyReleased(KEY_D) && move->moveDir.horizontal == RIGHT)){
-        move->moveDir.horizontal = NONE;
+    if((IsKeyReleased(KEY_A) && move->direction.horizontal == LEFT)||
+       (IsKeyReleased(KEY_D) && move->direction.horizontal == RIGHT)){
+        move->direction.horizontal = NONE;
     }
 
     if((IsKeyReleased(KEY_RIGHT) && move->rotate == CLOCKWISE)||

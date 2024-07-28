@@ -19,26 +19,26 @@ void fireEnemyBullet(ShipInfo *info){
 void moveEnemyShip(ShipInfo *info){
     MoveInfo *move = info->shipMove;
 
-    if(move->moveDir.vertical == UP){
+    if(move->direction.vertical == UP){
         move->pos.y -= move->speed;
     }
-    else if(move->moveDir.vertical == DOWN){
+    else if(move->direction.vertical == DOWN){
         move->pos.y += move->speed;
     }
 
-    if(move->moveDir.horizontal == RIGHT){
+    if(move->direction.horizontal == RIGHT){
         move->pos.x += move->speed;
     }
-    else if(move->moveDir.horizontal == LEFT){
+    else if(move->direction.horizontal == LEFT){
         move->pos.x -= move->speed;
     }
 
-    if(move->moveDir.horizontal == NONE) move->moveDir.horizontal = RIGHT;
+    if(move->direction.horizontal == NONE) move->direction.horizontal = RIGHT;
 
-    if(move->pos.x < 0) move->moveDir.horizontal = RIGHT;
+    if(move->pos.x < 0) move->direction.horizontal = RIGHT;
 
     /* if(move->pos.y-size.y/2 < 0)move->pos.y += move->speed; */
-    if(move->pos.x > GetScreenWidth())move->moveDir.horizontal = LEFT;
+    if(move->pos.x > GetScreenWidth())move->direction.horizontal = LEFT;
     /* if(move->pos.y+size.y/2 > GetScreenHeight())move->pos.y -= move->speed; */
 }
 

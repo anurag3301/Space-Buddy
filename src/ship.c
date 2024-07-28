@@ -3,17 +3,17 @@
 
 
 void updateShipPosition(ShipInfo ship){
-    if(ship.shipMove->moveDir.vertical == UP){
+    if(ship.shipMove->direction.vertical == UP){
         ship.shipMove->pos.y -= ship.shipMove->speed;
     }
-    else if(ship.shipMove->moveDir.vertical == DOWN){
+    else if(ship.shipMove->direction.vertical == DOWN){
         ship.shipMove->pos.y += ship.shipMove->speed;
     }
 
-    if(ship.shipMove->moveDir.horizontal == RIGHT){
+    if(ship.shipMove->direction.horizontal == RIGHT){
         ship.shipMove->pos.x += ship.shipMove->speed;
     }
-    else if(ship.shipMove->moveDir.horizontal == LEFT){
+    else if(ship.shipMove->direction.horizontal == LEFT){
         ship.shipMove->pos.x -= ship.shipMove->speed;
     }
 

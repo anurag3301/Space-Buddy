@@ -17,5 +17,6 @@ typedef struct{
 
 
 void updateShipPosition(ShipInfo ship);
+void drawShip(ShipInfo);
 
 #endif

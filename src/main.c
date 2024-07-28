@@ -36,9 +36,7 @@ int main(){
 
     MoveInfo enemyMoveInfo = {3, {200, 200}, 0, {NONE, NONE}, NOROTATE}; 
     ShipInfo enemy = {400, {0,0}, &enemyMoveInfo, 15, createDArray(), enemyTexture};
-
     clock_gettime(CLOCK_MONOTONIC, &enemy.lastFire);
-
 
 
     while(!WindowShouldClose()){
@@ -67,15 +65,8 @@ int main(){
         DrawBullet(ship.shotArray, shotTexture);
         DrawBullet(enemy.shotArray, enemyShotTexture);
 
-        DrawTexturePro(shipTexture, (Rectangle){0, 0, shipTexture.width, shipTexture.height}, 
-                (Rectangle){(*ship.shipMove).pos.x, shipMoveInfo.pos.y, shipTexture.width, shipTexture.height}, 
-                (Vector2){shipTexture.width / 2.0f, shipTexture.height / 2.0f }, 
-                (*ship.shipMove).angle, RAYWHITE);
-
-        DrawTexturePro(enemyTexture, (Rectangle){0, 0, enemyTexture.width, enemyTexture.height}, 
-                (Rectangle){(*enemy.shipMove).pos.x, (*enemy.shipMove).pos.y, enemyTexture.width, enemyTexture.height}, 
-                (Vector2){enemyTexture.width / 2.0f, enemyTexture.height / 2.0f }, 
-                (*enemy.shipMove).angle, RAYWHITE);
+        drawShip(ship);
+        drawShip(enemy);
 
         EndDrawing();
     }

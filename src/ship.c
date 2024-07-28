@@ -3,36 +3,36 @@
 
 
 void updateShipPosition(ShipInfo ship){
-    if(ship.shipMove->direction.vertical == UP){
-        ship.shipMove->pos.y -= ship.shipMove->speed;
+    if(ship.move->direction.vertical == UP){
+        ship.move->pos.y -= ship.move->speed;
     }
-    else if(ship.shipMove->direction.vertical == DOWN){
-        ship.shipMove->pos.y += ship.shipMove->speed;
-    }
-
-    if(ship.shipMove->direction.horizontal == RIGHT){
-        ship.shipMove->pos.x += ship.shipMove->speed;
-    }
-    else if(ship.shipMove->direction.horizontal == LEFT){
-        ship.shipMove->pos.x -= ship.shipMove->speed;
+    else if(ship.move->direction.vertical == DOWN){
+        ship.move->pos.y += ship.move->speed;
     }
 
-    if(ship.shipMove->pos.x-ship.texture.width/2 < 0)ship.shipMove->pos.x += ship.shipMove->speed;
-    if(ship.shipMove->pos.y-ship.texture.height/2 < 0)ship.shipMove->pos.y += ship.shipMove->speed;
-    if(ship.shipMove->pos.x+ship.texture.width/2 > GetScreenWidth())ship.shipMove->pos.x -= ship.shipMove->speed;
-    if(ship.shipMove->pos.y+ship.texture.height/2 > GetScreenHeight())ship.shipMove->pos.y -= ship.shipMove->speed;
+    if(ship.move->direction.horizontal == RIGHT){
+        ship.move->pos.x += ship.move->speed;
+    }
+    else if(ship.move->direction.horizontal == LEFT){
+        ship.move->pos.x -= ship.move->speed;
+    }
+
+    if(ship.move->pos.x-ship.texture.width/2 < 0)ship.move->pos.x += ship.move->speed;
+    if(ship.move->pos.y-ship.texture.height/2 < 0)ship.move->pos.y += ship.move->speed;
+    if(ship.move->pos.x+ship.texture.width/2 > GetScreenWidth())ship.move->pos.x -= ship.move->speed;
+    if(ship.move->pos.y+ship.texture.height/2 > GetScreenHeight())ship.move->pos.y -= ship.move->speed;
 
 
-    if(ship.shipMove->rotate == CLOCKWISE) ship.shipMove->angle += ship.shipMove->speed*0.5;
-    else if(ship.shipMove->rotate == ANTICLOCKWISE) ship.shipMove->angle -= ship.shipMove->speed*0.5;
+    if(ship.move->rotate == CLOCKWISE) ship.move->angle += ship.move->speed*0.5;
+    else if(ship.move->rotate == ANTICLOCKWISE) ship.move->angle -= ship.move->speed*0.5;
 }
 
 
 void drawShip(ShipInfo ship){
     DrawTexturePro(ship.texture, (Rectangle){0, 0, ship.texture.width, ship.texture.height}, 
-            (Rectangle){(*ship.shipMove).pos.x, (*ship.shipMove).pos.y, ship.texture.width, ship.texture.height}, 
+            (Rectangle){(*ship.move).pos.x, (*ship.move).pos.y, ship.texture.width, ship.texture.height}, 
             (Vector2){ship.texture.width / 2.0f, ship.texture.height / 2.0f }, 
-            (*ship.shipMove).angle, RAYWHITE);
+            (*ship.move).angle, RAYWHITE);
 }
 
 

@@ -9,7 +9,7 @@
 typedef struct{
     size_t fireDelay;
     struct timespec lastFire;
-    MoveInfo *shipMove;
+    MoveInfo *move;
     int bulletSpeed;
     DArray *shotArray;
     Texture2D texture; 

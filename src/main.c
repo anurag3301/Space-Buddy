@@ -43,13 +43,13 @@ int main(){
         BeginDrawing();
         ClearBackground(BLACK);
 
-        captureMoveInput(ship.shipMove); 
+        captureMoveInput(ship.move); 
         updateShipPosition(ship);
 
         moveEnemyShip(&enemy);
 
         if(IsKeyPressed(KEY_SPACE) || IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
-            fireBullet(ship.shotArray, 25, *ship.shipMove); 
+            fireBullet(ship.shotArray, 25, *ship.move); 
         }
 
         fireEnemyBullet(&enemy);
@@ -59,8 +59,8 @@ int main(){
         
         bulletHitEnemy(&enemy, enemyTexture, ship.shotArray);
 
-        (*ship.shipMove).angle = angleBW2Vector(shipMoveInfo.pos, (Vector2){GetMouseX(), GetMouseY()});
-        (*enemy.shipMove).angle = angleBW2Vector((*enemy.shipMove).pos, (*ship.shipMove).pos);
+        (*ship.move).angle = angleBW2Vector(shipMoveInfo.pos, (Vector2){GetMouseX(), GetMouseY()});
+        (*enemy.move).angle = angleBW2Vector((*enemy.move).pos, (*ship.move).pos);
 
         drawBullet(ship.shotArray, shotTexture);
         drawBullet(enemy.shotArray, enemyShotTexture);

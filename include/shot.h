@@ -3,8 +3,9 @@
 #include "darray.h"
 #include "moveableElement.h"
 
+void updateShotPosition(DArray *shotArr, Vector2 size);
 void fireBullet(DArray *shotArray, int speed, MoveInfo shipMoveInfo);
-void DrawBullet(DArray *shotArray, Texture2D shotTexture);
-bool BulletCollision(MoveInfo shipMove, Texture2D shipTexture, MoveInfo shotMove);
+void drawBullet(DArray *shotArray, Texture2D shotTexture);
+bool bulletCollision(MoveInfo shipMove, Texture2D shipTexture, MoveInfo shotMove);
 
 #endif

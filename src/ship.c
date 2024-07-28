@@ -1,4 +1,5 @@
 #include "ship.h"
+#include <math.h>
 
 
 void updateShipPosition(ShipInfo ship){
@@ -32,4 +33,19 @@ void drawShip(ShipInfo ship){
             (Rectangle){(*ship.shipMove).pos.x, (*ship.shipMove).pos.y, ship.texture.width, ship.texture.height}, 
             (Vector2){ship.texture.width / 2.0f, ship.texture.height / 2.0f }, 
             (*ship.shipMove).angle, RAYWHITE);
+}
+
+
+void updateShotPosition(DArray *shotArr, Vector2 size){
+    for(size_t i=0; i<shotArr->size; i++){
+        MoveInfo* move = (MoveInfo*)shotArr->data[i];
+        move->pos.x = move->pos.x + move->speed*cos(DEG2RAD * move->angle);
+        move->pos.y = move->pos.y + move->speed*sin(DEG2RAD * move->angle);
+
+        if(move->pos.x-size.x/2 < 0 || move->pos.y-size.y/2 < 0 || 
+            move->pos.x+size.x/2 > GetScreenWidth() || move->pos.y+size.y/2 > GetScreenHeight())
+        {
+            removeDA(shotArr, i);        
+        }
+    }
 }

@@ -12,7 +12,7 @@ void fireBullet(DArray *shotArray, int speed, MoveInfo shipMoveInfo){
         appendDA(shotArray, shotMoveInfo); 
 }
 
-void DrawBullet(DArray *shotArray, Texture2D shotTexture){
+void drawBullet(DArray *shotArray, Texture2D shotTexture){
     for(size_t i=0; i<shotArray->size; i++){
         MoveInfo shotMove = *((MoveInfo*)shotArray->data[i]);
         DrawTexturePro(shotTexture, (Rectangle){0, 0, shotTexture.width, shotTexture.height}, 
@@ -22,7 +22,7 @@ void DrawBullet(DArray *shotArray, Texture2D shotTexture){
     }
 }
 
-bool BulletCollision(MoveInfo shipMove, Texture2D shipTexture, MoveInfo shotMove){
+bool bulletCollision(MoveInfo shipMove, Texture2D shipTexture, MoveInfo shotMove){
     Quadrangle shipQuad  = texturePosToQuad(shipMove.pos, shipTexture);
     shipQuad = rotateQuad(shipQuad, DEG2RAD*shipMove.angle);
     Vector2 points[] = {shipQuad.p1, shipQuad.p2, shipQuad.p3, shipQuad.p4};

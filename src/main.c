@@ -54,16 +54,16 @@ int main(){
 
         fireEnemyBullet(&enemy);
 
-        UpdatePositionShot(ship.shotArray, (Vector2){shotTexture.width, shotTexture.height});
-        UpdatePositionShot(enemy.shotArray, (Vector2){shotTexture.width, shotTexture.height});
+        updateShotPosition(ship.shotArray, (Vector2){shotTexture.width, shotTexture.height});
+        updateShotPosition(enemy.shotArray, (Vector2){shotTexture.width, shotTexture.height});
         
         bulletHitEnemy(&enemy, enemyTexture, ship.shotArray);
 
         (*ship.shipMove).angle = angleBW2Vector(shipMoveInfo.pos, (Vector2){GetMouseX(), GetMouseY()});
         (*enemy.shipMove).angle = angleBW2Vector((*enemy.shipMove).pos, (*ship.shipMove).pos);
 
-        DrawBullet(ship.shotArray, shotTexture);
-        DrawBullet(enemy.shotArray, enemyShotTexture);
+        drawBullet(ship.shotArray, shotTexture);
+        drawBullet(enemy.shotArray, enemyShotTexture);
 
         drawShip(ship);
         drawShip(enemy);

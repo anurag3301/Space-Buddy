@@ -51,16 +51,3 @@ float angleBW2Vector(Vector2 pos, Vector2 targetPos){
 }
 
 
-void UpdatePositionShot(DArray *shotArr, Vector2 size){
-    for(size_t i=0; i<shotArr->size; i++){
-        MoveInfo* move = (MoveInfo*)shotArr->data[i];
-        move->pos.x = move->pos.x + move->speed*cos(DEG2RAD * move->angle);
-        move->pos.y = move->pos.y + move->speed*sin(DEG2RAD * move->angle);
-
-        if(move->pos.x-size.x/2 < 0 || move->pos.y-size.y/2 < 0 || 
-            move->pos.x+size.x/2 > GetScreenWidth() || move->pos.y+size.y/2 > GetScreenHeight())
-        {
-            removeDA(shotArr, i);        
-        }
-    }
-}

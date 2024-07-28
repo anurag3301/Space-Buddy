@@ -5,7 +5,7 @@
 #include <math.h>
 #include <raymath.h>
 
-void UpdateMovement(MoveInfo *move){
+void captureMoveInput(MoveInfo *move){
     if(IsKeyPressed(KEY_W) || IsKeyPressedRepeat(KEY_W)){
         move->moveDir.vertical = UP;
     }
@@ -42,30 +42,6 @@ void UpdateMovement(MoveInfo *move){
 }
 
 
-void UpdatePosition(MoveInfo *move, Vector2 size){
-    if(move->moveDir.vertical == UP){
-        move->pos.y -= move->speed;
-    }
-    else if(move->moveDir.vertical == DOWN){
-        move->pos.y += move->speed;
-    }
-
-    if(move->moveDir.horizontal == RIGHT){
-        move->pos.x += move->speed;
-    }
-    else if(move->moveDir.horizontal == LEFT){
-        move->pos.x -= move->speed;
-    }
-
-    if(move->pos.x-size.x/2 < 0)move->pos.x += move->speed;
-    if(move->pos.y-size.y/2 < 0)move->pos.y += move->speed;
-    if(move->pos.x+size.x/2 > GetScreenWidth())move->pos.x -= move->speed;
-    if(move->pos.y+size.y/2 > GetScreenHeight())move->pos.y -= move->speed;
-
-
-    if(move->rotate == CLOCKWISE) move->angle += move->speed*0.5;
-    else if(move->rotate == ANTICLOCKWISE) move->angle -= move->speed*0.5;
-}
 
 
 float angleBW2Vector(Vector2 pos, Vector2 targetPos){

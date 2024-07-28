@@ -16,18 +16,12 @@
 #include "ship.h"
 
 
+
+const int screenWidth = 1600;
+const int screenHeight = 900;
+
+
 int main(){
-    const int screenWidth = 1600;
-    const int screenHeight = 900;
-
-    MoveInfo shipMoveInfo = {6, {screenWidth/2, screenHeight/2}, 0, {NONE, NONE}, NOROTATE}; 
-    ShipInfo ship = {0, {0,0}, &shipMoveInfo, 15, createDArray()};
-
-    MoveInfo enemyMoveInfo = {3, {200, 200}, 0, {NONE, NONE}, NOROTATE}; 
-    ShipInfo enemy = {400, {0,0}, &enemyMoveInfo, 15, createDArray()};
-
-    clock_gettime(CLOCK_MONOTONIC, &enemy.lastFire);
-
     InitWindow(screenWidth, screenHeight, "Space Buddy");
     SetTargetFPS(60);
 
@@ -37,12 +31,23 @@ int main(){
     Texture2D enemyShotTexture = textureFromImage("images/enemyshot.png");
 
 
+    MoveInfo shipMoveInfo = {6, {screenWidth/2, screenHeight/2}, 0, {NONE, NONE}, NOROTATE}; 
+    ShipInfo ship = {0, {0,0}, &shipMoveInfo, 15, createDArray(), shipTexture};
+
+    MoveInfo enemyMoveInfo = {3, {200, 200}, 0, {NONE, NONE}, NOROTATE}; 
+    ShipInfo enemy = {400, {0,0}, &enemyMoveInfo, 15, createDArray(), enemyTexture};
+
+    clock_gettime(CLOCK_MONOTONIC, &enemy.lastFire);
+
+
+
     while(!WindowShouldClose()){
         BeginDrawing();
         ClearBackground(BLACK);
 
-        UpdateMovement(ship.shipMove); 
-        UpdatePosition(ship.shipMove, (Vector2){shipTexture.width, shipTexture.height});
+        captureMoveInput(ship.shipMove); 
+        updateShipPosition(ship);
+
         moveEnemyShip(&enemy);
 
         if(IsKeyPressed(KEY_SPACE) || IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){

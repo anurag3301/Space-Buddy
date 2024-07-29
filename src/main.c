@@ -31,10 +31,10 @@ int main(){
 
 
     MoveInfo shipMoveInfo = {6, {screenWidth/2, screenHeight/2}, 0, {NONE, NONE}, NOROTATE}; 
-    ShipInfo ship = {0, {0,0}, &shipMoveInfo, 15, createDArray(), shipTexture};
+    ShipInfo ship = {0, {0,0}, &shipMoveInfo, 15, createDArray(), shipTexture, 1000, 1000, 100};
 
     MoveInfo enemyMoveInfo = {3, {200, 200}, 0, {NONE, NONE}, NOROTATE}; 
-    ShipInfo enemy = {400, {0,0}, &enemyMoveInfo, 15, createDArray(), enemyTexture};
+    ShipInfo enemy = {400, {0,0}, &enemyMoveInfo, 15, createDArray(), enemyTexture, 1000, 1000, 100};
     clock_gettime(CLOCK_MONOTONIC, &enemy.lastFire);
 
 
@@ -56,7 +56,8 @@ int main(){
         updateBulletPosition(ship.bulletArray, (Vector2){bulletTexture.width, bulletTexture.height});
         updateBulletPosition(enemy.bulletArray, (Vector2){bulletTexture.width, bulletTexture.height});
         
-        bulletHitEnemy(&enemy, enemyTexture, ship.bulletArray);
+        bulletHitEnemy(&enemy, ship);
+        bulletHitPlayer(&ship, enemy);
 
         (*ship.move).angle = angleBW2Vector(shipMoveInfo.pos, (Vector2){GetMouseX(), GetMouseY()});
         (*enemy.move).angle = angleBW2Vector((*enemy.move).pos, (*ship.move).pos);

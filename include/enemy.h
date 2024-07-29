@@ -6,9 +6,8 @@
 #include "ship.h"
 
 void fireEnemyBullet(ShipInfo* info);
-
 void moveEnemyShip(ShipInfo *info);
-
-void bulletHitEnemy(ShipInfo *info, Texture2D enemyTexture, DArray *bulletArr);
+void bulletHitEnemy(ShipInfo *enemy, ShipInfo ship);
+void bulletHitPlayer(ShipInfo *ship, ShipInfo enemy);
 
 #endif

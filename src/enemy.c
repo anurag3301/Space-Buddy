@@ -43,10 +43,23 @@ void moveEnemyShip(ShipInfo *info){
 }
 
 
-void bulletHitEnemy(ShipInfo *info, Texture2D enemyTexture, DArray *bulletArr){
-    for(size_t i=0; i<bulletArr->size; i++){
-        if(bulletCollision(*(info->move), enemyTexture, *(MoveInfo*)bulletArr->data[i])){
-            removeDA(bulletArr, i);
+void bulletHitEnemy(ShipInfo *enemy, ShipInfo ship){
+    for(size_t i=0; i<ship.bulletArray->size; i++){
+        if(bulletCollision(*(enemy->move), enemy->texture, *(MoveInfo*)ship.bulletArray->data[i])){
+            enemy->health -= ship.damage;
+            if(enemy->health <= 0); // TODO: add enemy execution
+            removeDA(ship.bulletArray, i);
+        }
+    }
+}
+
+
+void bulletHitPlayer(ShipInfo *ship, ShipInfo enemy){
+    for(size_t i=0; i<enemy.bulletArray->size; i++){
+        if(bulletCollision(*(ship->move), ship->texture, *(MoveInfo*)enemy.bulletArray->data[i])){
+            ship->health -= enemy.damage;
+            if(ship->health <= 0); // TODO: add enemy execution
+            removeDA(enemy.bulletArray, i);
         }
     }
 }

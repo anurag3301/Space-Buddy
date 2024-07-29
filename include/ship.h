@@ -5,6 +5,7 @@
 #include <time.h>
 #include <stddef.h>
 #include "darray.h"
+#include "stdint.h"
 
 typedef struct{
     size_t fireDelay;
@@ -13,6 +14,9 @@ typedef struct{
     int bulletSpeed;
     DArray *bulletArray;
     Texture2D texture; 
+    int16_t maxHealth; 
+    int16_t health; 
+    int16_t damage; 
 } ShipInfo;
 
 

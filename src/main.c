@@ -5,7 +5,6 @@
 #include <string.h>
 #include <time.h>
 
-#include "main.h"
 #include "movement.h"
 #include "darray.h"
 #include "moveableElement.h"

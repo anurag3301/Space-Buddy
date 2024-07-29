@@ -1,6 +1,5 @@
 #ifndef _MOVEMENT_H
 #define _MOVEMENT_H
-#include "main.h"
 #include <raylib.h>
 #include "moveableElement.h"
 #include "darray.h"

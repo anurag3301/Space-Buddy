@@ -1,7 +1,15 @@
 #ifndef _MOVEABLEELEMENT_H
 #define _MOVEABLEELEMENT_H
 #include <raylib.h>
-#include "main.h"
+
+typedef enum {NONE, UP, DOWN, RIGHT, LEFT}Direction;
+typedef enum {NOROTATE, CLOCKWISE, ANTICLOCKWISE}RotationDirection;
+
+typedef struct{
+    Direction horizontal;
+    Direction vertical;
+} Direction2D;
+
 
 typedef struct{
     int speed;

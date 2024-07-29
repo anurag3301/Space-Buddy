@@ -1,5 +1,6 @@
 #include "ship.h"
 #include <math.h>
+#include "calc.h"
 
 
 void updateShipPosition(ShipInfo ship){
@@ -29,6 +30,14 @@ void updateShipPosition(ShipInfo ship){
 
 
 void drawShip(ShipInfo ship){
+    Vector2 healthBarSizeOuter = {ship.texture.width * 1.2, 10};
+    Vector2 healthBarPosOuter = {ship.move->pos.x - healthBarSizeOuter.x/2, ship.move->pos.y - ship.texture.width/2-30};
+
+    Vector2 healthBarPosInner = {healthBarPosOuter.x+healthBarSizeOuter.x*(ship.maxHealth-ship.health)/ship.maxHealth, healthBarPosOuter.y};
+    Vector2 healthBarSizeInner = {healthBarSizeOuter.x - healthBarSizeOuter.x*(ship.maxHealth-ship.health)/ship.maxHealth, healthBarSizeOuter.y};
+    DrawRectangleV(healthBarPosInner, healthBarSizeInner, GREEN);
+    DrawRectangleLines(healthBarPosOuter.x, healthBarPosOuter.y, healthBarSizeOuter.x, healthBarSizeOuter.y, GRAY);
+
     DrawTexturePro(ship.texture, (Rectangle){0, 0, ship.texture.width, ship.texture.height}, 
             (Rectangle){(*ship.move).pos.x, (*ship.move).pos.y, ship.texture.width, ship.texture.height}, 
             (Vector2){ship.texture.width / 2.0f, ship.texture.height / 2.0f }, 

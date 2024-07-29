@@ -34,7 +34,7 @@ int main(){
     ShipInfo ship = {0, {0,0}, &shipMoveInfo, 15, createDArray(), shipTexture, 1000, 1000, 100};
 
     MoveInfo enemyMoveInfo = {3, {200, 200}, 0, {NONE, NONE}, NOROTATE}; 
-    ShipInfo enemy = {400, {0,0}, &enemyMoveInfo, 15, createDArray(), enemyTexture, 1000, 1000, 100};
+    ShipInfo enemy = {400, {0,0}, &enemyMoveInfo, 15, createDArray(), enemyTexture, 1000, 1000, 50};
     clock_gettime(CLOCK_MONOTONIC, &enemy.lastFire);
 
 

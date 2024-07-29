@@ -1,5 +1,9 @@
 #include "calc.h"
 #include "math.h"
+#include "darray.h"
+#include <stdlib.h>
+#include <raylib.h>
+#include <time.h>
 
 Quadrangle rotateQuad(Quadrangle quad, float angle) {
     Vector2 centroid;  
@@ -34,4 +38,47 @@ Quadrangle texturePosToQuad(Vector2 pos, Texture2D texture){
     quad.p4 = (Vector2){pos.x - texture.width/2, pos.y + texture.height/2};
 
     return quad;
+}
+
+DArray* generateRandomCircle(int count){
+    DArray* circles = createDArray();
+
+    int gridSize = (int)sqrt(count);
+    if (gridSize * gridSize < count) {
+        gridSize++;
+    }
+
+    int pointsPerCell = (count + gridSize * gridSize - 1) / (gridSize * gridSize);
+
+    float cellWidth =  GetScreenWidth() / gridSize;
+    float cellHeight = GetScreenHeight() / gridSize;
+
+    // Initialize random number generator
+    srand(time(NULL));
+
+    int index = 0;
+    for (int i = 0; i < gridSize; i++) {
+        for (int j = 0; j < gridSize; j++) {
+            for (int k = 0; k < pointsPerCell && index < count; k++) {
+                float cellX = i * cellWidth;
+                float cellY = j * cellHeight;
+
+                float randomX = ((float)rand() / RAND_MAX) * cellWidth;
+                float randomY = ((float)rand() / RAND_MAX) * cellHeight;
+
+                Circle* circle = malloc(sizeof(Circle));
+
+                circle->pos.x = cellX + randomX;
+                circle->pos.y = cellY + randomY;
+                circle->radius = GetRandomValue(3, 7);
+                circle->color.r = GetRandomValue(10, 250);
+                circle->color.g = GetRandomValue(10, 250);
+                circle->color.b = GetRandomValue(10, 250);
+                circle->color.a = GetRandomValue(50, 150);
+                appendDA(circles, circle);
+            }
+        }
+    }
+
+    return circles;
 }

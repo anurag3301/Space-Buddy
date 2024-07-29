@@ -29,6 +29,7 @@ int main(){
     Texture2D enemyTexture = textureFromImage("images/enemy.png");
     Texture2D enemyBulletTexture = textureFromImage("images/enemybullet.png");
 
+    DArray* bgCircles = generateRandomCircle(100);
 
     MoveInfo shipMoveInfo = {6, {screenWidth/2, screenHeight/2}, 0, {NONE, NONE}, NOROTATE}; 
     ShipInfo ship = {0, {0,0}, &shipMoveInfo, 15, createDArray(), shipTexture, 1000, 1000, 100};
@@ -61,6 +62,11 @@ int main(){
 
         (*ship.move).angle = angleBW2Vector(shipMoveInfo.pos, (Vector2){GetMouseX(), GetMouseY()});
         (*enemy.move).angle = angleBW2Vector((*enemy.move).pos, (*ship.move).pos);
+
+        for(size_t i=0; i<bgCircles->size; i++){
+            Circle* circle = (Circle*)bgCircles->data[i];
+            DrawCircleV(circle->pos, circle->radius, circle->color);
+        }
 
         drawBullet(ship.bulletArray, bulletTexture);
         drawBullet(enemy.bulletArray, enemyBulletTexture);

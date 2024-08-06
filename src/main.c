@@ -15,19 +15,19 @@
 #include "ship.h"
 
 
-
 const int screenWidth = 1600;
 const int screenHeight = 900;
 
+Texture2D shipTexture, bulletTexture, enemyTexture, enemyBulletTexture ;
 
 int main(){
     InitWindow(screenWidth, screenHeight, "Space Buddy");
     SetTargetFPS(60);
 
-    Texture2D shipTexture = textureFromImage("images/ship.png");
-    Texture2D bulletTexture = textureFromImage("images/bullet.png");
-    Texture2D enemyTexture = textureFromImage("images/enemy.png");
-    Texture2D enemyBulletTexture = textureFromImage("images/enemybullet.png");
+    shipTexture = textureFromImage("images/ship.png");
+    bulletTexture = textureFromImage("images/bullet.png");
+    enemyTexture = textureFromImage("images/enemy.png");
+    enemyBulletTexture = textureFromImage("images/enemybullet.png");
 
     DArray* bgCircles = generateRandomCircle(100);
 
@@ -35,9 +35,12 @@ int main(){
     ShipInfo ship = {0, {0,0}, &shipMoveInfo, 15, createDArray(), shipTexture, 1000, 1000, 100};
 
     DArray* enemyShips = createDArray();
-    createRandomEnemy(enemyShips, enemyTexture, 3);
 
     while(!WindowShouldClose()){
+        if(enemyShips->size == 0){
+            createRandomEnemy(enemyShips, enemyTexture, GetRandomValue(1, 3));
+        }
+
         BeginDrawing();
         ClearBackground(BLACK);
 

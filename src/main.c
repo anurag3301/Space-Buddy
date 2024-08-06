@@ -87,6 +87,10 @@ int main(){
         DrawText(scoreBuf, 15, 15, 50, RED);
 
         EndDrawing();
+        if(ship.health <= 0){
+            WaitTime(5);
+        }
+
     }
 
     freeDA(&ship.bulletArray);

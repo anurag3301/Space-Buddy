@@ -5,10 +5,12 @@ INCLUDE_DIR := include
 
 # Compiler and flags
 CC := gcc
-CFLAGS := -I$(INCLUDE_DIR) -g -Wall -Wextra -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+CFLAGS := -I$(INCLUDE_DIR) -g -Wall -Wextra
+LDFLAGS := -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 
 # Executable name
 EXEC := spacebuddy
+STATIC_EXEC := spacebuddy_static
 
 # Find all source files and corresponding object files
 SRCS := $(wildcard $(SRC_DIR)/*.c)
@@ -19,7 +21,15 @@ all: $(EXEC)
 
 # Link object files to create the final executable
 $(EXEC): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $@
+	$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $@
+
+# Link object files to create the static executable
+static: CFLAGS += -static
+static: LDFLAGS := -static $(LDFLAGS)
+static: $(STATIC_EXEC)
+
+$(STATIC_EXEC): $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $@
 
 # Compile source files to object files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
@@ -31,8 +41,7 @@ $(OBJ_DIR):
 
 # Clean up build artifacts
 clean:
-	rm -f $(OBJ_DIR)/*.o $(EXEC)
+	rm -f $(OBJ_DIR)/*.o $(EXEC) $(STATIC_EXEC)
 
 # Phony targets
-.PHONY: all clean
-
+.PHONY: all clean static

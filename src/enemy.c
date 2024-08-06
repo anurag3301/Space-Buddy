@@ -73,11 +73,14 @@ void moveEnemyShip(DArray* ships){
 void bulletHitEnemy(DArray* enemyShips, ShipInfo ship){
     for(size_t i=0; i<enemyShips->size; i++){
         ShipInfo *enemy= enemyShips->data[i];
-        for(size_t i=0; i<ship.bulletArray->size; i++){
-            if(bulletCollision(*(enemy->move), enemy->texture, *(MoveInfo*)ship.bulletArray->data[i])){
+        for(size_t j=0; j<ship.bulletArray->size; j++){
+            if(bulletCollision(*(enemy->move), enemy->texture, *(MoveInfo*)ship.bulletArray->data[j])){
                 enemy->health -= ship.damage;
-                if(enemy->health <= 0); // TODO: add enemy execution
-                removeDA(ship.bulletArray, i);
+                if(enemy->health <= 0){
+                    freeDA(&enemy->bulletArray);
+                    removeDA(enemyShips, i); // TODO: add enemy execution
+                }
+                removeDA(ship.bulletArray, j);
             }
         }
     }
@@ -87,11 +90,11 @@ void bulletHitEnemy(DArray* enemyShips, ShipInfo ship){
 void bulletHitPlayer(ShipInfo *ship, DArray* enemyShips){
     for(size_t i=0; i<enemyShips->size; i++){
         ShipInfo enemy= *(ShipInfo*)enemyShips->data[i];
-        for(size_t i=0; i<enemy.bulletArray->size; i++){
-            if(bulletCollision(*(ship->move), ship->texture, *(MoveInfo*)enemy.bulletArray->data[i])){
+        for(size_t j=0; j<enemy.bulletArray->size; j++){
+            if(bulletCollision(*(ship->move), ship->texture, *(MoveInfo*)enemy.bulletArray->data[j])){
                 ship->health -= enemy.damage;
                 if(ship->health <= 0); // TODO: add enemy execution
-                removeDA(enemy.bulletArray, i);
+                removeDA(enemy.bulletArray, j);
             }
         }
     }

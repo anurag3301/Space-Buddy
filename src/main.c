@@ -17,6 +17,7 @@
 
 const int screenWidth = 1600;
 const int screenHeight = 900;
+uint score = 0;
 
 Texture2D shipTexture, bulletTexture, enemyTexture, enemyBulletTexture ;
 
@@ -35,6 +36,7 @@ int main(){
     ShipInfo ship = {0, {0,0}, &shipMoveInfo, 15, createDArray(), shipTexture, 1000, 1000, 100};
 
     DArray* enemyShips = createDArray();
+    createRandomEnemy(enemyShips, enemyTexture, 1);
 
     while(!WindowShouldClose()){
         if(enemyShips->size == 0){
@@ -79,6 +81,10 @@ int main(){
         drawShip(ship);
         for(size_t i=0; i<enemyShips->size; i++)
             drawShip(*(ShipInfo*)enemyShips->data[i]);
+
+        char scoreBuf[10];
+        sprintf(scoreBuf, "%d", score);
+        DrawText(scoreBuf, 15, 15, 50, RED);
 
         EndDrawing();
     }

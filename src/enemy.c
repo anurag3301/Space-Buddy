@@ -71,6 +71,7 @@ void moveEnemyShip(DArray* ships){
 
 
 void bulletHitEnemy(DArray* enemyShips, ShipInfo ship){
+    extern uint score;
     for(size_t i=0; i<enemyShips->size; i++){
         ShipInfo *enemy= enemyShips->data[i];
         for(size_t j=0; j<ship.bulletArray->size; j++){
@@ -79,6 +80,7 @@ void bulletHitEnemy(DArray* enemyShips, ShipInfo ship){
                 if(enemy->health <= 0){
                     freeDA(&enemy->bulletArray);
                     removeDA(enemyShips, i); // TODO: add enemy execution
+                    score+=5;
                 }
                 removeDA(ship.bulletArray, j);
             }

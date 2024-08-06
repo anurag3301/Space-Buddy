@@ -2,6 +2,7 @@
 #include "darray.h"
 #include "movement.h"
 #include "calc.h"
+#include "ship.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -27,4 +28,12 @@ bool bulletCollision(MoveInfo shipMove, Texture2D shipTexture, MoveInfo bulletMo
     shipQuad = rotateQuad(shipQuad, DEG2RAD*shipMove.angle);
     Vector2 points[] = {shipQuad.p1, shipQuad.p2, shipQuad.p3, shipQuad.p4};
     return CheckCollisionPointPoly(bulletMove.pos, points, 4);
+}
+
+void deleteEnemyShips(DArray* enemyShips){
+    for(size_t i=0; i<enemyShips->size; i++){
+        ShipInfo* enemy = enemyShips->data[i];
+        freeDA(&enemy->bulletArray);
+    }
+    freeDA(&enemyShips);
 }

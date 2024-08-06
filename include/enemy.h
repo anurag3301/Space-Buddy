@@ -4,10 +4,13 @@
 #include "moveableElement.h"
 #include "darray.h"
 #include "ship.h"
+#include <sys/types.h>
 
-void fireEnemyBullet(ShipInfo* info);
-void moveEnemyShip(ShipInfo *info);
-void bulletHitEnemy(ShipInfo *enemy, ShipInfo ship);
-void bulletHitPlayer(ShipInfo *ship, ShipInfo enemy);
+void fireEnemyBullet(DArray* ships);
+void moveEnemyShip(DArray* ships);
+void bulletHitEnemy(DArray* enemyShips, ShipInfo ship);
+void bulletHitPlayer(ShipInfo *ship, DArray* enemyShips);
+void createRandomEnemy(DArray* arr, Texture2D enemyTexture, uint count);
+void deleteEnemyShips(DArray* enemyShips);
 
 #endif

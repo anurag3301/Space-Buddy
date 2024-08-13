@@ -18,6 +18,7 @@
 const int screenWidth = 1600;
 const int screenHeight = 900;
 uint score = 0;
+uint maxscore = 0;
 
 Texture2D shipTexture, bulletTexture, enemyTexture, enemyBulletTexture ;
 
@@ -30,79 +31,96 @@ int main(){
     enemyTexture = textureFromImage("images/enemy.png");
     enemyBulletTexture = textureFromImage("images/enemybullet.png");
 
-    DArray* bgCircles = generateRandomCircle(100);
+    while(!WindowShouldClose()){
+        DArray* bgCircles = generateRandomCircle(100);
 
-    MoveInfo shipMoveInfo = {6, {screenWidth/2, screenHeight/2}, 0, {NONE, NONE}, NOROTATE}; 
-    ShipInfo ship = {0, {0,0}, &shipMoveInfo, 15, createDArray(), shipTexture, 1000, 1000, 100};
+        MoveInfo shipMoveInfo = {6, {screenWidth/2, screenHeight/2}, 0, {NONE, NONE}, NOROTATE}; 
+        ShipInfo ship = {0, {0,0}, &shipMoveInfo, 15, createDArray(), shipTexture, 1000, 1000, 100};
 
-    DArray* enemyShips = createDArray();
-    createRandomEnemy(enemyShips, enemyTexture, 1);
+        DArray* enemyShips = createDArray();
+        createRandomEnemy(enemyShips, enemyTexture, 1);
 
-    while (!WindowShouldClose()) {
-        if (!gameOver) {
-            if (enemyShips->size == 0) {
-                createRandomEnemy(enemyShips, enemyTexture, GetRandomValue(1, 3));
+        bool gameOver = false;
+        char buf[100];
+        score = 0;
+
+        while (!WindowShouldClose()) {
+            if (!gameOver) {
+                if (enemyShips->size == 0) {
+                    createRandomEnemy(enemyShips, enemyTexture, GetRandomValue(1, 3));
+                }
+
+                captureMoveInput(ship.move);
+                updateShipPosition(ship);
+                moveEnemyShip(enemyShips);
+
+                if (IsKeyPressed(KEY_SPACE) || IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    fireBullet(ship.bulletArray, 25, *ship.move);
+                }
+
+                fireEnemyBullet(enemyShips);
+
+                updateBulletPosition(ship.bulletArray, (Vector2){bulletTexture.width, bulletTexture.height});
+                (*ship.move).angle = angleBW2Vector(shipMoveInfo.pos, (Vector2){GetMouseX(), GetMouseY()});
+                for (size_t i = 0; i < enemyShips->size; i++) {
+                    ShipInfo *info = enemyShips->data[i];
+                    updateBulletPosition(info->bulletArray, (Vector2){bulletTexture.width, bulletTexture.height});
+                    (*info->move).angle = angleBW2Vector((*info->move).pos, (*ship.move).pos);
+                }
+
+                bulletHitEnemy(enemyShips, ship);
+                bulletHitPlayer(&ship, enemyShips);
+
+                for (size_t i = 0; i < bgCircles->size; i++) {
+                    Circle* circle = (Circle*)bgCircles->data[i];
+                    DrawCircleV(circle->pos, circle->radius, circle->color);
+                }
+
+                drawBullet(ship.bulletArray, bulletTexture);
+                for (size_t i = 0; i < enemyShips->size; i++) {
+                    drawBullet(((ShipInfo*)enemyShips->data[i])->bulletArray, enemyBulletTexture);
+                }
+
+                drawShip(ship);
+                for (size_t i = 0; i < enemyShips->size; i++) {
+                    drawShip(*(ShipInfo*)enemyShips->data[i]);
+                }
+
+                sprintf(buf, "%d", score);
+                DrawText(buf, 15, 15, 50, RED);
+
+                if (ship.health <= 0) {
+                    gameOver = true;
+                    maxscore = maxscore > score ? maxscore : score;
+                }
             }
 
-            captureMoveInput(ship.move);
-            updateShipPosition(ship);
-            moveEnemyShip(enemyShips);
+            BeginDrawing();
+            ClearBackground(BLACK);
 
-            if (IsKeyPressed(KEY_SPACE) || IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-                fireBullet(ship.bulletArray, 25, *ship.move);
+            if (gameOver) {
+                DrawText("GAME OVER", 200, 200, 200, RED);
+                DrawText("Press Enter to retry!!", 200, 400, 100, RED);
+                sprintf(buf, "Score: %d", score);
+                DrawText(buf, 300, 600, 70, RED);
+                sprintf(buf, "Max Score: %d", maxscore);
+                DrawText(buf, 800, 600, 70, RED);
+
+                if (IsKeyPressed(KEY_ENTER)) {
+                    break;
+                }
             }
 
-            fireEnemyBullet(enemyShips);
-
-            updateBulletPosition(ship.bulletArray, (Vector2){bulletTexture.width, bulletTexture.height});
-            (*ship.move).angle = angleBW2Vector(shipMoveInfo.pos, (Vector2){GetMouseX(), GetMouseY()});
-            for (size_t i = 0; i < enemyShips->size; i++) {
-                ShipInfo *info = enemyShips->data[i];
-                updateBulletPosition(info->bulletArray, (Vector2){bulletTexture.width, bulletTexture.height});
-                (*info->move).angle = angleBW2Vector((*info->move).pos, (*ship.move).pos);
-            }
-
-            bulletHitEnemy(enemyShips, ship);
-            bulletHitPlayer(&ship, enemyShips);
-
-            for (size_t i = 0; i < bgCircles->size; i++) {
-                Circle* circle = (Circle*)bgCircles->data[i];
-                DrawCircleV(circle->pos, circle->radius, circle->color);
-            }
-
-            drawBullet(ship.bulletArray, bulletTexture);
-            for (size_t i = 0; i < enemyShips->size; i++) {
-                drawBullet(((ShipInfo*)enemyShips->data[i])->bulletArray, enemyBulletTexture);
-            }
-
-            drawShip(ship);
-            for (size_t i = 0; i < enemyShips->size; i++) {
-                drawShip(*(ShipInfo*)enemyShips->data[i]);
-            }
-
-            char scoreBuf[10];
-            sprintf(scoreBuf, "%d", score);
-            DrawText(scoreBuf, 15, 15, 50, RED);
-
-            if (ship.health <= 0) {
-                gameOver = true;
-            }
+            EndDrawing();
         }
 
-        BeginDrawing();
-        ClearBackground(BLACK);
-
-        EndDrawing();
-        if(ship.health <= 0){
-            WaitTime(5);
-        }
-
-        EndDrawing();
+        freeDA(&ship.bulletArray);
+        deleteEnemyShips(enemyShips);
     }
 
-    freeDA(&ship.bulletArray);
-    deleteEnemyShips(enemyShips);
-
     UnloadTexture(shipTexture);
+    UnloadTexture(bulletTexture);
+    UnloadTexture(enemyTexture);
+    UnloadTexture(enemyBulletTexture);
     CloseWindow();
 }

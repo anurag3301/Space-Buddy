@@ -38,59 +38,66 @@ int main(){
     DArray* enemyShips = createDArray();
     createRandomEnemy(enemyShips, enemyTexture, 1);
 
-    while(!WindowShouldClose()){
-        if(enemyShips->size == 0){
-            createRandomEnemy(enemyShips, enemyTexture, GetRandomValue(1, 3));
+    while (!WindowShouldClose()) {
+        if (!gameOver) {
+            if (enemyShips->size == 0) {
+                createRandomEnemy(enemyShips, enemyTexture, GetRandomValue(1, 3));
+            }
+
+            captureMoveInput(ship.move);
+            updateShipPosition(ship);
+            moveEnemyShip(enemyShips);
+
+            if (IsKeyPressed(KEY_SPACE) || IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                fireBullet(ship.bulletArray, 25, *ship.move);
+            }
+
+            fireEnemyBullet(enemyShips);
+
+            updateBulletPosition(ship.bulletArray, (Vector2){bulletTexture.width, bulletTexture.height});
+            (*ship.move).angle = angleBW2Vector(shipMoveInfo.pos, (Vector2){GetMouseX(), GetMouseY()});
+            for (size_t i = 0; i < enemyShips->size; i++) {
+                ShipInfo *info = enemyShips->data[i];
+                updateBulletPosition(info->bulletArray, (Vector2){bulletTexture.width, bulletTexture.height});
+                (*info->move).angle = angleBW2Vector((*info->move).pos, (*ship.move).pos);
+            }
+
+            bulletHitEnemy(enemyShips, ship);
+            bulletHitPlayer(&ship, enemyShips);
+
+            for (size_t i = 0; i < bgCircles->size; i++) {
+                Circle* circle = (Circle*)bgCircles->data[i];
+                DrawCircleV(circle->pos, circle->radius, circle->color);
+            }
+
+            drawBullet(ship.bulletArray, bulletTexture);
+            for (size_t i = 0; i < enemyShips->size; i++) {
+                drawBullet(((ShipInfo*)enemyShips->data[i])->bulletArray, enemyBulletTexture);
+            }
+
+            drawShip(ship);
+            for (size_t i = 0; i < enemyShips->size; i++) {
+                drawShip(*(ShipInfo*)enemyShips->data[i]);
+            }
+
+            char scoreBuf[10];
+            sprintf(scoreBuf, "%d", score);
+            DrawText(scoreBuf, 15, 15, 50, RED);
+
+            if (ship.health <= 0) {
+                gameOver = true;
+            }
         }
 
         BeginDrawing();
         ClearBackground(BLACK);
-
-        captureMoveInput(ship.move); 
-        updateShipPosition(ship);
-
-        moveEnemyShip(enemyShips);
-
-        if(IsKeyPressed(KEY_SPACE) || IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
-            fireBullet(ship.bulletArray, 25, *ship.move); 
-        }
-
-        fireEnemyBullet(enemyShips);
-
-        updateBulletPosition(ship.bulletArray, (Vector2){bulletTexture.width, bulletTexture.height});
-        (*ship.move).angle = angleBW2Vector(shipMoveInfo.pos, (Vector2){GetMouseX(), GetMouseY()});
-        for(size_t i=0; i<enemyShips->size; i++){
-            ShipInfo *info = enemyShips->data[i];
-            updateBulletPosition(info->bulletArray, (Vector2){bulletTexture.width, bulletTexture.height});
-            (*info->move).angle = angleBW2Vector((*info->move).pos, (*ship.move).pos);
-        }
-        
-        bulletHitEnemy(enemyShips, ship);
-        bulletHitPlayer(&ship, enemyShips);
-
-
-        for(size_t i=0; i<bgCircles->size; i++){
-            Circle* circle = (Circle*)bgCircles->data[i];
-            DrawCircleV(circle->pos, circle->radius, circle->color);
-        }
-
-        drawBullet(ship.bulletArray, bulletTexture);
-        for(size_t i=0; i<enemyShips->size; i++)
-            drawBullet(((ShipInfo*)enemyShips->data[i])->bulletArray, enemyBulletTexture);
-
-        drawShip(ship);
-        for(size_t i=0; i<enemyShips->size; i++)
-            drawShip(*(ShipInfo*)enemyShips->data[i]);
-
-        char scoreBuf[10];
-        sprintf(scoreBuf, "%d", score);
-        DrawText(scoreBuf, 15, 15, 50, RED);
 
         EndDrawing();
         if(ship.health <= 0){
             WaitTime(5);
         }
 
+        EndDrawing();
     }
 
     freeDA(&ship.bulletArray);

@@ -1,5 +1,7 @@
 #include "enemy.h"
 #include "bullet.h"
+#include "darray.h"
+#include "utils.h"
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -75,6 +77,7 @@ void moveEnemyShip(DArray* ships){
 void bulletHitEnemy(DArray* enemyShips, ShipInfo ship){
     extern uint score;
     extern Sound bullet_hit, blastSound;
+    extern DArray *enemyDieAnimationList;
     for(size_t i=0; i<enemyShips->size; i++){
         ShipInfo *enemy= enemyShips->data[i];
         for(size_t j=0; j<ship.bulletArray->size; j++){
@@ -84,8 +87,12 @@ void bulletHitEnemy(DArray* enemyShips, ShipInfo ship){
                 if(enemy->health <= 0){
                     PlaySound(blastSound);
                     freeDA(&enemy->bulletArray);
-                    removeDA(enemyShips, i); // TODO: add enemy execution
+                    removeDA(enemyShips, i);
                     score+=5;
+                    AnimationEntry* animation = malloc(sizeof(AnimationEntry)); 
+                    animation->pos = enemy->move->pos;
+                    animation->time = GetTime();
+                    appendDA(enemyDieAnimationList, animation);
                 }
                 removeDA(ship.bulletArray, j);
             }

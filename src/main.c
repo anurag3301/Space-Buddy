@@ -17,11 +17,16 @@
 
 const int screenWidth = 1600;
 const int screenHeight = 900;
+
 uint score = 0;
 uint maxscore = 0;
 
 Texture2D shipTexture, bulletTexture, enemyTexture, enemyBulletTexture ;
 Sound enemyBulletSound, shipBulletSound, bullet_hit, blastSound;
+
+SpriteAnimation shipExplostionAnimation;
+DArray *enemyDieAnimationList;
+
 
 int main(){
     InitWindow(screenWidth, screenHeight, "Space Buddy");
@@ -33,6 +38,8 @@ int main(){
     bulletTexture = LoadTexture("images/bullet.png");
     enemyTexture = LoadTexture("images/enemy.png");
     enemyBulletTexture = LoadTexture("images/enemybullet.png");
+	shipExplostionAnimation = CreateSpriteAnimation(LoadTexture("images/explostion.png"), 14, 220, 6);
+
     enemyBulletSound = LoadSound("sound/bullet1.ogg");
     SetSoundVolume(enemyBulletSound, 0.25);
     SetSoundPitch(enemyBulletSound, 0.8);
@@ -40,6 +47,7 @@ int main(){
     bullet_hit = LoadSound("sound/bullet_hit.ogg");
     SetSoundVolume(bullet_hit, 0.50);
     blastSound = LoadSound("sound/blast.ogg");
+    enemyDieAnimationList = createDArray();
 
     while(!WindowShouldClose()){
         DArray* bgCircles = generateRandomCircle(100);
@@ -101,6 +109,8 @@ int main(){
                 sprintf(buf, "%d", score);
                 DrawText(buf, 15, 15, 50, RED);
 
+                UpdateDrawFrameOnce(enemyDieAnimationList, shipExplostionAnimation);
+
                 if (ship.health <= 0) {
                     gameOver = true;
                     maxscore = maxscore > score ? maxscore : score;
@@ -140,3 +150,4 @@ int main(){
     UnloadSound(blastSound);
     CloseWindow();
 }
+

@@ -21,21 +21,31 @@ uint score = 0;
 uint maxscore = 0;
 
 Texture2D shipTexture, bulletTexture, enemyTexture, enemyBulletTexture ;
+Sound enemyBulletSound, shipBulletSound, bullet_hit, blastSound;
 
 int main(){
     InitWindow(screenWidth, screenHeight, "Space Buddy");
+    InitAudioDevice();
     SetTargetFPS(60);
+    /* SetMasterVolume(0); */
 
     shipTexture = textureFromImage("images/ship.png");
     bulletTexture = textureFromImage("images/bullet.png");
     enemyTexture = textureFromImage("images/enemy.png");
     enemyBulletTexture = textureFromImage("images/enemybullet.png");
+    enemyBulletSound = LoadSound("sound/bullet1.ogg");
+    SetSoundVolume(enemyBulletSound, 0.25);
+    SetSoundPitch(enemyBulletSound, 0.8);
+    shipBulletSound = LoadSound("sound/bullet2.ogg");
+    bullet_hit = LoadSound("sound/bullet_hit.ogg");
+    SetSoundVolume(bullet_hit, 0.50);
+    blastSound = LoadSound("sound/blast.ogg");
 
     while(!WindowShouldClose()){
         DArray* bgCircles = generateRandomCircle(100);
 
         MoveInfo shipMoveInfo = {6, {screenWidth/2, screenHeight/2}, 0, {NONE, NONE}, NOROTATE}; 
-        ShipInfo ship = {0, {0,0}, &shipMoveInfo, 15, createDArray(), shipTexture, 1000, 1000, 100};
+        ShipInfo ship = {0, {0,0}, &shipMoveInfo, 15, createDArray(), shipTexture, 1000, 1000, 200};
 
         DArray* enemyShips = createDArray();
         createRandomEnemy(enemyShips, enemyTexture, 1);
@@ -55,6 +65,8 @@ int main(){
                 moveEnemyShip(enemyShips);
 
                 if (IsKeyPressed(KEY_SPACE) || IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    StopSound(shipBulletSound);
+                    PlaySound(shipBulletSound);
                     fireBullet(ship.bulletArray, 25, *ship.move);
                 }
 
@@ -122,5 +134,9 @@ int main(){
     UnloadTexture(bulletTexture);
     UnloadTexture(enemyTexture);
     UnloadTexture(enemyBulletTexture);
+    UnloadSound(enemyBulletSound);
+    UnloadSound(shipBulletSound);
+    UnloadSound(bullet_hit);
+    UnloadSound(blastSound);
     CloseWindow();
 }

@@ -2,7 +2,7 @@
 SRC_DIR := src
 OBJ_DIR := obj
 INCLUDE_DIR := include
-RAYLIB_DIR := /home/anurag/try/raylib/src  # Path to Raylib source directory
+RAYLIB_DIR := /home/anurag/try/raylib/src
 
 # Compiler and flags for native build
 CC := gcc
@@ -37,8 +37,8 @@ $(OBJ_DIR):
 
 # Build for web using Emscripten
 web:
-	mkdir -p web
-	$(EMCC) $(SRCS) -o web/$(WEB_EXEC) -I$(INCLUDE_DIR) -I$(RAYLIB_DIR) -L$(RAYLIB_DIR) -lraylib $(EMFLAGS) --shell-file /home/anurag/try/raylib/src/minshell.html -s ASYNCIFY --preload-file images
+	mkdir -p game
+	$(EMCC) $(SRCS) -o game/$(WEB_EXEC) -I$(INCLUDE_DIR) -I$(RAYLIB_DIR) -L$(RAYLIB_DIR) -lraylib $(EMFLAGS) --shell-file /home/anurag/try/raylib/src/minshell.html -s ASYNCIFY --preload-file images --preload-file sound
 
 # Clean up build artifacts
 clean:

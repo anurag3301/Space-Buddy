@@ -14,6 +14,8 @@ void fireEnemyBullet(DArray* ships){
         size_t elapsed_ms = (now.tv_sec - info->lastFire.tv_sec) * 1000 + (now.tv_nsec - info->lastFire.tv_nsec) / 1000000;
 
         if(elapsed_ms >= info->fireDelay){
+            extern Sound enemyBulletSound;
+            PlaySound(enemyBulletSound);
             fireBullet(info->bulletArray, info->bulletSpeed, *info->move);
             info->lastFire = now;
         }
@@ -29,7 +31,7 @@ void createRandomEnemy(DArray* arr, Texture2D enemyTexture, uint count){
         MoveInfo* enemyMoveInfo = malloc(sizeof(MoveInfo));
         memcpy(enemyMoveInfo, &tempMove, sizeof(MoveInfo));
 
-        ShipInfo tempEnemy = {400, {0,0}, enemyMoveInfo, 15, createDArray(), 
+        ShipInfo tempEnemy = {600, {0,0}, enemyMoveInfo, 15, createDArray(), 
                             enemyTexture, 1000, 1000, 50};
         clock_gettime(CLOCK_MONOTONIC, &tempEnemy.lastFire);
         ShipInfo* enemy = malloc(sizeof(ShipInfo));
@@ -72,12 +74,15 @@ void moveEnemyShip(DArray* ships){
 
 void bulletHitEnemy(DArray* enemyShips, ShipInfo ship){
     extern uint score;
+    extern Sound bullet_hit, blastSound;
     for(size_t i=0; i<enemyShips->size; i++){
         ShipInfo *enemy= enemyShips->data[i];
         for(size_t j=0; j<ship.bulletArray->size; j++){
             if(bulletCollision(*(enemy->move), enemy->texture, *(MoveInfo*)ship.bulletArray->data[j])){
+                PlaySound(bullet_hit);
                 enemy->health -= ship.damage;
                 if(enemy->health <= 0){
+                    PlaySound(blastSound);
                     freeDA(&enemy->bulletArray);
                     removeDA(enemyShips, i); // TODO: add enemy execution
                     score+=5;

@@ -29,10 +29,10 @@ int main(){
     SetTargetFPS(60);
     /* SetMasterVolume(0); */
 
-    shipTexture = textureFromImage("images/ship.png");
-    bulletTexture = textureFromImage("images/bullet.png");
-    enemyTexture = textureFromImage("images/enemy.png");
-    enemyBulletTexture = textureFromImage("images/enemybullet.png");
+    shipTexture = LoadTexture("images/ship.png");
+    bulletTexture = LoadTexture("images/bullet.png");
+    enemyTexture = LoadTexture("images/enemy.png");
+    enemyBulletTexture = LoadTexture("images/enemybullet.png");
     enemyBulletSound = LoadSound("sound/bullet1.ogg");
     SetSoundVolume(enemyBulletSound, 0.25);
     SetSoundPitch(enemyBulletSound, 0.8);
